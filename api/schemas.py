@@ -26,7 +26,7 @@ class APIUpdate(BaseModel):
 
 
 class APIOut(APIBase):
-    id: str
+    id: int
 
     class Config:
         from_attributes = True
@@ -52,17 +52,23 @@ class TierBase(BaseModel):
 
 class TierCreate(TierBase):
     requests_per_minute: int
+    requests_per_hour: int
+    requests_per_day: int
 
 
 class TierUpdate(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
     requests_per_minute: Optional[int] = None
+    requests_per_hour: Optional[int] = None
+    requests_per_day: Optional[int] = None
 
 
 class TierOut(TierBase):
-    id: str
+    id: int
     requests_per_minute: int
+    requests_per_hour: int | None = None
+    requests_per_day: int | None = None
 
     class Config:
         from_attributes = True
@@ -82,16 +88,16 @@ class TiersListResponse(BaseModel):
 # API Key Schemas
 # -------------------------
 class APIKeyCreate(BaseModel):
-    api_id: str
-    tier_id: str
+    api_id: int
+    tier_id: int
 
 
 class APIKeyOut(BaseModel):
-    id: str
+    id: int
     key_value: str
     enabled: bool
-    api_id: str
-    tier_id: str
+    api_id: int
+    tier_id: int
 
     class Config:
         from_attributes = True

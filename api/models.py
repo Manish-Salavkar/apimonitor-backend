@@ -22,7 +22,7 @@ import uuid
 class API(Base):
     __tablename__ = "apis"
 
-    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), unique=True, nullable=False)
     endpoint = Column(String(255), nullable=False)
     method = Column(String(10), default="GET")
@@ -39,14 +39,14 @@ class API(Base):
 class APIKey(Base):
     __tablename__ = "api_keys"
 
-    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    id = Column(Integer, primary_key=True, index=True)
     key_value = Column(String(64), unique=True, index=True, nullable=False)
     enabled = Column(Boolean, default=True)
     created_at = Column(DateTime, server_default=func.now())
 
     user_id = Column(Integer, ForeignKey("users.id"))
-    api_id = Column(String(36), ForeignKey("apis.id"))
-    tier_id = Column(String(36), ForeignKey("tiers.id"))
+    api_id = Column(Integer, ForeignKey("apis.id"))
+    tier_id = Column(Integer, ForeignKey("tiers.id"))
 
     user = relationship("User")
     api = relationship("API", back_populates="api_keys")
@@ -61,7 +61,7 @@ class APIKey(Base):
 class Tier(Base):
     __tablename__ = "tiers"
 
-    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50), unique=True, nullable=False)
     description = Column(Text)
     created_at = Column(DateTime, server_default=func.now())
@@ -82,8 +82,8 @@ class Tier(Base):
 class RateLimitRules(Base):
     __tablename__ = "rate_limit_rules"
 
-    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    tier_id = Column(String(36), ForeignKey("tiers.id"), unique=True)
+    id = Column(Integer, primary_key=True, index=True)
+    tier_id = Column(Integer, ForeignKey("tiers.id"), unique=True)
 
     requests_per_minute = Column(Integer, nullable=False)
     requests_per_hour = Column(Integer, nullable=True)
@@ -100,10 +100,10 @@ class RateLimitRules(Base):
 class UsageLog(Base):
     __tablename__ = "usage_logs"
 
-    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    api_key_id = Column(String(36), ForeignKey("api_keys.id"))
+    id = Column(Integer, primary_key=True, index=True)
+    api_key_id = Column(Integer, ForeignKey("api_keys.id"))
     user_id = Column(Integer, ForeignKey("users.id"))
-    api_id = Column(String(36), ForeignKey("apis.id"))
+    api_id = Column(Integer, ForeignKey("apis.id"))
 
     endpoint = Column(String(255))
     method = Column(String(10))
@@ -123,10 +123,10 @@ class UsageLog(Base):
 class AnalyticsSummary(Base):
     __tablename__ = "analytics_summary"
 
-    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    id = Column(Integer, primary_key=True, index=True)
 
-    api_id = Column(String(36), ForeignKey("apis.id"), nullable=False)
-    api_key_id = Column(String(36), ForeignKey("api_keys.id"), nullable=True)
+    api_id = Column(Integer, ForeignKey("apis.id"), nullable=False)
+    api_key_id = Column(Integer, ForeignKey("api_keys.id"), nullable=True)
 
     window_start = Column(DateTime, nullable=False)
     window_end = Column(DateTime, nullable=False)

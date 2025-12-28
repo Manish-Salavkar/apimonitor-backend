@@ -1,3 +1,4 @@
+# app/core/usage_logger.py
 import time
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.api import models
@@ -6,8 +7,8 @@ from app.api import models
 async def log_usage(
     db: AsyncSession,
     *,
-    api_id: str,
-    api_key_id: str,
+    api_id: int,
+    api_key_id: int,
     user_id: int,
     endpoint: str,
     method: str,

@@ -1,3 +1,4 @@
+# app/core/analytics_counter.py
 from datetime import datetime
 from app.core.redis import redis_client
 
@@ -8,8 +9,8 @@ def get_time_window():
 
 async def increment_request_counters(
     *,
-    api_id: str,
-    api_key_id: str,
+    api_id: int,
+    api_key_id: int,
     status_code: int,
     response_time_ms: int,
     rate_limited: bool = False

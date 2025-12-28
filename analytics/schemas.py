@@ -4,8 +4,8 @@ from pydantic import BaseModel
 
 
 class AnalyticsBase(BaseModel):
-    api_id: str
-    api_key_id: Optional[str]
+    api_id: int
+    api_key_id: Optional[int]
     window_start: datetime
     window_end: datetime
 
@@ -17,9 +17,11 @@ class AnalyticsBase(BaseModel):
     avg_response_time_ms: int
     max_response_time_ms: int
 
+    
+
 
 class AnalyticsOut(AnalyticsBase):
-    id: str
+    id: int
 
     class Config:
         from_attributes = True
