@@ -18,6 +18,8 @@ async def rate_limit_middleware(request: Request, call_next):
     if not request.url.path.startswith("/internal"):
         return await call_next(request)
 
+    if request.method == "OPTIONS":
+        return await call_next(request)
     # =========================================================
     # 🛑 BYPASS LOGIC FOR STRESS TESTING
     # =========================================================

@@ -35,3 +35,21 @@ async def read_all_analytics(
         )
 
     return await services.get_admin_analytics(db)
+
+
+@router.get(
+    "/users/usage",
+    response_model=schemas.UserAnalyticsResponse
+)
+async def read_user_usage_analytics(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    # Ensure only Admins can see user-specific data
+    if current_user.role_id != 1:  # Assuming 1 is Admin
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin access required"
+        )
+
+    return await services.get_user_usage_stats(db)
